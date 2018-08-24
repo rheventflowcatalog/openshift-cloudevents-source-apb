@@ -1,11 +1,11 @@
 - name: create event source environment variable config map
   k8s_v1_config_map:
-    name: openshift-cloud-event-source-ev.cm
+    name: k8s-cloud-event-source-ev.cm
     namespace: '{{ namespace }}'
     labels:
       streamzi.io/kind: ev
-      streamzi.io/target: openshift-cloud-event-source
-      app: event-flow
+      streamzi.io/target: k8s-cloud-event-source
+      app: k8s-monitor
     data:
       KAFKA_SERVICE_HOST: my-cluster-kafka
       KAFKA_SERVICE_PORT: '9092'
@@ -13,34 +13,34 @@
 
 - name: create event source deployment
   k8s_extensions_v1beta1_deployment:
-   name: openshift-cloud-event-source
+   name: k8s-cloud-event-source
    namespace: '{{ namespace }}'
    labels:
-     app: event-flow
-     service: openshift-cloud-event-source
+     app: k8s-monitor
+     service: k8s-cloud-event-source
    replicas: 1
    spec_template_metadata_labels:
-     app: event-flow
-     service: openshift-cloud-event-source
+     app: k8s-monitor
+     service: k8s-cloud-event-source
    containers:
    - env:
      image: docker.io/streamzi/openshift-cloud-event-source:latest
      imagePullPolicy: IfNotPresent
-     name: openshift-cloud-event-source
+     name: k8s-cloud-event-source
      ports:
      - container_port: 8080
        protocol: TCP
 
 - name: create event source service
   k8s_v1_service:
-    name: openshift-cloud-event-source
+    name: k8s-cloud-event-source
     namespace: '{{ namespace }}'
     labels:
-      app: event-flow
-      service: openshift-cloud-event-source
+      app: k8s-monitor
+      service: k8s-cloud-event-source
     selector:
-      app: event-flow
-      service: openshift-cloud-event-source
+      app: k8s-monitor
+      service: k8s-cloud-event-source
     ports:
     - name: web
       port: 80
@@ -48,10 +48,10 @@
 
 - name: create event source route
   openshift_v1_route:
-    name: openshift-cloud-event-source
+    name: k8s-cloud-event-source
     namespace: '{{ namespace }}'
     labels:
-      app: event-flow
-      service: openshift-cloud-event-source
-    to_name: openshift-cloud-event-source
+      app: k8s-monitor
+      service: k8s-cloud-event-source
+    to_name: k8s-cloud-event-source
     spec_port_target_port: web
