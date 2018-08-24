@@ -1,0 +1,23 @@
+version: 1.0
+name: kubernetes-cloud-event-monitor-apb
+description: Monitor the kubernetes platform and emit Cloud Events
+bindable: False
+async: optional
+metadata:
+  displayName: Kubernetes Cloud Event Monitor
+  imageUrl: "https://avatars2.githubusercontent.com/u/32076828?s=200&v=4"
+plans:
+  - name: default
+    description: This deploys the Kubernetes Cloud Event Monitor
+    free: True
+    metadata: {}
+    parameters:
+    - name: admin_user
+      title: Openshift Admin User
+      type: string
+      required: true
+    - name: admin_password
+      title: Openshift Admin Password
+      type: string
+      display_type: password
+      required: true
