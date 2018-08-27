@@ -24,6 +24,21 @@
      service: k8s-cloud-event-source
    containers:
    - env:
+     - name: KAFKA_SERVICE_HOST
+       valueFrom:
+         configMapKeyRef:
+           name: "k8s-cloud-event-source-ev.cm"
+           key: KAFKA_SERVICE_HOST
+     - name: KAFKA_SERVICE_PORT
+       valueFrom:
+         configMapKeyRef:
+           name: "k8s-cloud-event-source-ev.cm"
+           key: KAFKA_SERVICE_PORT
+     - name: KAFKA_TOPIC
+       valueFrom:
+         configMapKeyRef:
+           name: "k8s-cloud-event-source-ev.cm"
+           key: KAFKA_TOPIC
      image: docker.io/streamzi/openshift-cloud-event-source:latest
      imagePullPolicy: IfNotPresent
      name: k8s-cloud-event-source
