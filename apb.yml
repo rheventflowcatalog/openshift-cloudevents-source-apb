@@ -5,7 +5,7 @@ bindable: False
 async: optional
 metadata:
   displayName: Openshift Cloud Event Monitor
-  imageUrl: "https://pbs.twimg.com/profile_images/942768105339662336/m0N1yViu_400x400.jpg"
+  imageUrl: "https://avatars0.githubusercontent.com/u/792337?s=200&v=4"
 plans:
   - name: default
     description: This deploys the Kubernetes Cloud Event Monitor
