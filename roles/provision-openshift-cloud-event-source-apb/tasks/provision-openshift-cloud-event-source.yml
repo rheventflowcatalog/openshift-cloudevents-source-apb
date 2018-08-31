@@ -1,11 +1,11 @@
 - name: create event source environment variable config map
   k8s_v1_config_map:
-    name: k8s-cloud-event-source-ev.cm
+    name: ocp-cloud-event-source-ev.cm
     namespace: '{{ namespace }}'
     labels:
       streamzi.io/kind: ev
-      streamzi.io/target: k8s-cloud-event-source
-      app: k8s-monitor
+      streamzi.io/target: ocp-cloud-event-source
+      app: openshift-monitor
     data:
       KAFKA_SERVICE_HOST: my-cluster-kafka
       KAFKA_SERVICE_PORT: '9092'
@@ -13,49 +13,49 @@
 
 - name: create event source deployment
   k8s_extensions_v1beta1_deployment:
-   name: k8s-cloud-event-source
+   name: ocp-cloud-event-source
    namespace: '{{ namespace }}'
    labels:
-     app: k8s-monitor
-     service: k8s-cloud-event-source
+     app: openshift-monitor
+     service: ocp-cloud-event-source
    replicas: 1
    spec_template_metadata_labels:
-     app: k8s-monitor
-     service: k8s-cloud-event-source
+     app: openshift-monitor
+     service: ocp-cloud-event-source
    containers:
    - env:
      - name: KAFKA_SERVICE_HOST
        valueFrom:
          configMapKeyRef:
-           name: "k8s-cloud-event-source-ev.cm"
+           name: "ocp-cloud-event-source-ev.cm"
            key: KAFKA_SERVICE_HOST
      - name: KAFKA_SERVICE_PORT
        valueFrom:
          configMapKeyRef:
-           name: "k8s-cloud-event-source-ev.cm"
+           name: "ocp-cloud-event-source-ev.cm"
            key: KAFKA_SERVICE_PORT
      - name: KAFKA_TOPIC
        valueFrom:
          configMapKeyRef:
-           name: "k8s-cloud-event-source-ev.cm"
+           name: "ocp-cloud-event-source-ev.cm"
            key: KAFKA_TOPIC
      image: docker.io/streamzi/openshift-cloud-event-source:latest
      imagePullPolicy: IfNotPresent
-     name: k8s-cloud-event-source
+     name: ocp-cloud-event-source
      ports:
      - container_port: 8080
        protocol: TCP
 
 - name: create event source service
   k8s_v1_service:
-    name: k8s-cloud-event-source
+    name: ocp-cloud-event-source
     namespace: '{{ namespace }}'
     labels:
-      app: k8s-monitor
-      service: k8s-cloud-event-source
+      app: openshift-monitor
+      service: ocp-cloud-event-source
     selector:
-      app: k8s-monitor
-      service: k8s-cloud-event-source
+      app: openshift-monitor
+      service: ocp-cloud-event-source
     ports:
     - name: web
       port: 80
@@ -63,10 +63,10 @@
 
 - name: create event source route
   openshift_v1_route:
-    name: k8s-cloud-event-source
+    name: ocp-cloud-event-source
     namespace: '{{ namespace }}'
     labels:
-      app: k8s-monitor
-      service: k8s-cloud-event-source
-    to_name: k8s-cloud-event-source
+      app: openshift-monitor
+      service: ocp-cloud-event-source
+    to_name: ocp-cloud-event-source
     spec_port_target_port: web
