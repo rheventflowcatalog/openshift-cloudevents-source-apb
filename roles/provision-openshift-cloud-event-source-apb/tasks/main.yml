@@ -1,2 +1,2 @@
-- include_tasks: provision-openshift-cloud-event-source.yml
 - include_tasks: provision-heptio-router.yml
+- include_tasks: provision-openshift-cloud-event-source.yml

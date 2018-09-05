@@ -1,5 +1,10 @@
 - name: Login As Super User
   command: "oc login -u {{ admin_user }} -p {{ admin_password }}"
 
+- name: "Create Event-Router deploy yaml file"
+  template:
+    src: deploy.yml.j2
+    dest: /tmp/deploy.yaml
+
 - name: "Deploy Heptio Router"
-  shell: "oc create -f https://raw.githubusercontent.com/project-streamzi/openshift-cloud-event-source/master/yaml/eventrouter.yaml -n {{ namespace }}"
+  shell: "oc create -f /tmp/deploy.yaml -n {{ namespace }}"
