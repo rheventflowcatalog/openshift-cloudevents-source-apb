@@ -7,7 +7,7 @@
       streamzi.io/target: k8s-cloud-event-source
       app: openshift-monitor
     data:
-      KAFKA_SERVICE_HOST: my-cluster-kafka
+      KAFKA_SERVICE_HOST: my-cluster-kafka-bootstrap
       KAFKA_SERVICE_PORT: '9092'
       KAFKA_TOPIC: gw.global.input.cloudevents
 
